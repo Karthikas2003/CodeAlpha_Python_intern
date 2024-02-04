@@ -1,1 +1,62 @@
+def add_stock(portfolio, ticker, shares):
+    stock_data = get_stock_data(ticker)
+    portfolio[ticker] = {"ticker": ticker, "shares": shares, "price": stock_data["currentPrice"]}
 
+def remove_stock(portfolio, ticker):
+    del portfolio[ticker]
+
+def update_portfolio(portfolio):
+    total_value = 0
+    for stock in portfolio.values():
+        stock_data = get_stock_data(stock["ticker"])
+        stock["price"] = stock_data["currentPrice"]
+        stock["value"] = stock["shares"] * stock["price"]
+        total_value += stock["value"]
+    return total_value
+
+def display_portfolio(portfolio):
+    print("Portfolio:")
+    for stock in portfolio.values():
+        print(f"{stock['ticker']} ({stock['shares']} shares) - ${stock['price']:.2f} - ${stock['value']:.2f}")
+    print(f"Total value: ${update_portfolio(portfolio):.2f}")
+
+def main():
+    portfolio = {}
+
+    while True:
+        print("\nOptions:")
+        print("1. Add stock")
+        print("2. Remove stock")
+        print("3. Update portfolio")
+        print("4. Display portfolio")
+        print("5. Exit")
+
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            ticker = input("Enter the stock ticker: ")
+            shares = float(input("Enter the number of shares: "))
+            add_stock(portfolio, ticker, shares)
+            print(f"{ticker} added to the portfolio.")
+
+        elif choice == 2:
+            ticker = input("Enter the stock ticker to remove: ")
+            remove_stock(portfolio, ticker)
+            print(f"{ticker} removed from the portfolio.")
+
+        elif choice == 3:
+            update_portfolio(portfolio)
+            print("Portfolio updated.")
+
+        elif choice == 4:
+            display_portfolio(portfolio)
+
+        elif choice == 5:
+            print("Exiting...")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
