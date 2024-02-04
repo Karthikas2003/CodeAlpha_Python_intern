@@ -1,1 +1,31 @@
+import os
+import shutil
 
+def move_files(source_directory, destination_directory):
+    for filename in os.listdir(source_directory):
+        print(filename)
+        source_file = os.path.join(source_directory, filename)
+        destination_file = os.path.join(destination_directory, filename)
+
+        if os.path.isfile(source_file):
+            shutil.move(source_file, destination_file)
+
+if __name__ == "__main__":
+    # Ensure the directories exist
+    import tempfile
+
+    test_directory = tempfile.mkdtemp()
+    destination_directory = tempfile.mkdtemp()
+
+    # Create test files in the source directory
+    with open(os.path.join(test_directory, "file1.txt"), "w") as f:
+        f.write("Test file 1")
+
+    with open(os.path.join(test_directory, "file2.txt"), "w") as f:
+        f.write("Test file 2")
+
+    move_files(test_directory, destination_directory)
+
+    # Remove the temporary directories
+    shutil.rmtree(test_directory)
+    shutil.rmtree(destination_directory)
