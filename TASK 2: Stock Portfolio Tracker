@@ -1,3 +1,9 @@
+import yfinance as yf
+
+def get_stock_data(ticker):
+    ticker = yf.Ticker(ticker)
+    return ticker.info
+
 def add_stock(portfolio, ticker, shares):
     stock_data = get_stock_data(ticker)
     portfolio[ticker] = {"ticker": ticker, "shares": shares, "price": stock_data["currentPrice"]}
